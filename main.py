@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 # FastAPI Resources
 from fastapi import FastAPI
-from fastapi import Body
+from fastapi import Body, Query
 
 app = FastAPI()
 
@@ -27,3 +27,25 @@ async def home():
 @app.post('/person/new')
 async def new_person(person: Person = Body(...)):
     return person
+
+
+# Validations: Query Parameters
+@app.get('/person/detail')
+async def detail_person(
+    name: Optional[str] = Query(
+        default=None,
+        min_length=1,
+        max_length=20
+    ),
+    age: Optional[int] = Query(
+        default=18,
+        ge=18,
+        lt=100
+    )
+):
+    return {
+        "Person": {
+            "name": name,
+            "age": age
+        }
+    }
