@@ -26,22 +26,26 @@ class Person(BaseModel):
     first_name: str = Field(
         ...,
         min_length=1,
-        max_length=50
+        max_length=50,
+        example='Endy'
     )
     last_name: str = Field(
         ...,
         min_length=1,
-        max_length=50
+        max_length=50,
+        example='Bermudez'
     )
     age: int = Field(
         ...,
         ge=18,
-        le=99
+        lt=100,
+        example=37
     )
     email: EmailStr
-    hair_color: Optional[HairColor] = Field(default=None)
-    is_married: Optional[bool] = Field(default=False)
+    hair_color: Optional[HairColor] = Field(default=None, example='red')
+    is_married: Optional[bool] = Field(default=None, example=True)
 
+    """
     class Config:
         schema_extra = {
             'example': {
@@ -53,23 +57,28 @@ class Person(BaseModel):
                 'is_married': True
             }
         }
+    """
 
 class Location(BaseModel):
     city: str = Field(
         ...,
         min_length=2,
-        max_length=40
+        max_length=40,
+        example='RCH'
     )
     state: str = Field(
         ...,
         min_length=2,
-        max_length=40
+        max_length=40,
+        example='GJR'
     )
     country: str = Field(
         ...,
         min_length=2,
-        max_length=40
+        max_length=40,
+        example= 'CO'
     )
+    """
     class Config:
         schema_extra = {
             'example': {
@@ -78,6 +87,7 @@ class Location(BaseModel):
                 'country': 'CO'
             }
         }
+    """
 
 
 @app.get('/')
@@ -145,10 +155,9 @@ async def upload_person(
         description="This field is the Person ID. It's required and must be greater than zero"
     ),
     person: Person = Body(...),
-    #location: Location = Body(...)
+    location: Location = Body(...)
 ):
-    #results = person.dict()
-    #results.update(location.dict())
+    results = person.dict()
+    results.update(location.dict())
     #results = person.dict() | location.dict()
-    #return results
-    return person
+    return results
