@@ -18,6 +18,12 @@ class Person(BaseModel):
     hair_color: Optional[str] = None
     is_married: Optional[bool] = None
 
+class Location(BaseModel):
+    city: str
+    state: str
+    country: str
+
+
 @app.get('/')
 async def home():
     return {"greeting": {"Hello": "World FastAPI."}}
@@ -71,3 +77,21 @@ async def detail_person(
             "message": "The person ID exists"
         }
     }
+
+
+# Validation Request Body
+@app.put('/person/{person_id}')
+async def upload_person(
+    person_id: int = Path(
+        ...,
+        gt=0,
+        title="Person ID",
+        description="This field is the Person ID. It's required and must be greater than zero"
+    ),
+    person: Person = Body(...),
+    location: Location = Body(...)
+):
+    results = person.dict()
+    results.update(location.dict())
+    #results = person.dict() | location.dict()
+    return results
