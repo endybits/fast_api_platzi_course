@@ -109,14 +109,16 @@ async def detail_person(
         min_length=1,
         max_length=20,
         title='Person Name',
-        description='This field correspond to the person name'
+        description='This field correspond to the person name',
+        example='Lina'
     ),
     age: Optional[int] = Query(
         default=18,
         ge=18,
         le=99,
         title='Person Age',
-        description='This field correspond to the person age'
+        description='This field correspond to the person age',
+        example=26
     )
 ):
     return {
@@ -134,7 +136,8 @@ async def detail_person(
         ...,
         gt=0,
         title="Person ID",
-        description="This field is the Person ID. It's required and must be greater than zero"
+        description="This field is the Person ID. It's required and must be greater than zero",
+        example=22222
     )
 ):
     return {
@@ -152,7 +155,8 @@ async def upload_person(
         ...,
         gt=0,
         title="Person ID",
-        description="This field is the Person ID. It's required and must be greater than zero"
+        description="This field is the Person ID. It's required and must be greater than zero",
+        example=1111
     ),
     person: Person = Body(...),
     location: Location = Body(...)
