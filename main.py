@@ -40,7 +40,19 @@ class Person(BaseModel):
     )
     email: EmailStr
     hair_color: Optional[HairColor] = Field(default=None)
-    is_married: Optional[bool] = Field(default=None)
+    is_married: Optional[bool] = Field(default=False)
+
+    class Config:
+        schema_extra = {
+            'example': {
+                'first_name': 'Endy',
+                'last_name': 'Bermudez',
+                'age': 36,
+                'email': 'endyb.dev@gmail.com',
+                'hair_color': 'black',
+                'is_married': True
+            }
+        }
 
 class Location(BaseModel):
     city: str = Field(
@@ -58,6 +70,14 @@ class Location(BaseModel):
         min_length=2,
         max_length=40
     )
+    class Config:
+        schema_extra = {
+            'example': {
+                'city': 'Riohacha',
+                'state': 'La Guajira',
+                'country': 'CO'
+            }
+        }
 
 
 @app.get('/')
@@ -125,9 +145,10 @@ async def upload_person(
         description="This field is the Person ID. It's required and must be greater than zero"
     ),
     person: Person = Body(...),
-    location: Location = Body(...)
+    #location: Location = Body(...)
 ):
-    results = person.dict()
-    results.update(location.dict())
+    #results = person.dict()
+    #results.update(location.dict())
     #results = person.dict() | location.dict()
-    return results
+    #return results
+    return person
