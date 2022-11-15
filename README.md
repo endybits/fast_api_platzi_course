@@ -14,7 +14,7 @@ Also, the integration with Pydantic allow us facilitate the api testing:
 * Individual field examples
 
 
-## STATUS CODE RESPONSES FAMILY
+## Status Codes: Responses Types
 ### 100
 * 100 Information Response
 
