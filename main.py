@@ -44,6 +44,11 @@ class Person(BaseModel):
     email: EmailStr
     hair_color: Optional[HairColor] = Field(default=None, example='red')
     is_married: Optional[bool] = Field(default=None, example=True)
+    password: str = Field(
+        ...,
+        min_length=8,
+        example='P@ssw0rd'
+    )
 
     """
     class Config:
@@ -58,6 +63,29 @@ class Person(BaseModel):
             }
         }
     """
+
+class PersonOut(BaseModel):
+    first_name: str = Field(
+        ...,
+        min_length=1,
+        max_length=50,
+        example='Endy'
+    )
+    last_name: str = Field(
+        ...,
+        min_length=1,
+        max_length=50,
+        example='Bermudez'
+    )
+    age: int = Field(
+        ...,
+        ge=18,
+        lt=100,
+        example=37
+    )
+    email: EmailStr
+    hair_color: Optional[HairColor] = Field(default=None, example='red')
+    is_married: Optional[bool] = Field(default=None, example=True)
 
 class Location(BaseModel):
     city: str = Field(
@@ -96,7 +124,7 @@ async def home():
 
 
 # Request Body and Response Body
-@app.post('/person/new')
+@app.post('/person/new', response_model=PersonOut)
 async def new_person(person: Person = Body(...)):
     return person
 
