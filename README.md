@@ -15,21 +15,37 @@ Also, the integration with Pydantic allow us facilitate the api testing:
 
 
 ## Status Codes: Responses Types
-### 100
-* 100 Information Response
+### 100 Information
+* 100 Continue
+* 101 Switching Protocols
+* 102 Processing
 
-### 200
+### 200 Ok
 * 200 Ok
 * 201 Created
+* 202 Accepted
 * 204 No content (But all is ok)
 
-### 300
-* 300 Redirecting
+### 300 Redirecting
+* 300 Multiple Choices
+* 303 See Other
+* 305 Use Proxy
+* 307 Temporary Redirect
+* 308 Permanent Redirect
 
-### 400
-* 400 Client Error
-* 404 No exists
+### 400 Client Error
+* 400 Bad Request
+* 401 Unauthorized
+* 402 Payment Required
+* 403 Forbidden
+* 404 No Found
+* 405 Method Not Allowed
+* 408 Request Timeout
 * 422 Validation Error
+* 450 Blocked by Windows Parental
 
-### 500
+### 500 Server Error
 * 500 Internal Server Error
+* 502 Bad Gateway
+* 503 Service Unavailable
+* 504 Gateway Timeout
