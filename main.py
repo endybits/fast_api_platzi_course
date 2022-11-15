@@ -8,6 +8,7 @@ from pydantic import Field, EmailStr
 
 # FastAPI Resources
 from fastapi import FastAPI
+from fastapi import status
 from fastapi import Body, Query, Path
 
 app = FastAPI()
@@ -100,19 +101,29 @@ class Location(BaseModel):
     """
 
 
-@app.get('/')
+@app.get(
+    path='/',
+    status_code=status.HTTP_200_OK
+)
 async def home():
     return {"greeting": {"Hello": "World FastAPI."}}
 
 
 # Request Body and Response Body
-@app.post('/person/new', response_model=PersonOut)
+@app.post(
+    path='/person/new',
+    response_model=PersonOut,
+    status_code=status.HTTP_201_CREATED
+)
 async def new_person(person: Person = Body(...)):
     return person
 
 
 # Validations: Query Parameters
-@app.get('/person/detail')
+@app.get(
+    path='/person/detail',
+    status_code=status.HTTP_200_OK
+)
 async def detail_person(
     name: Optional[str] = Query(
         default=None,
@@ -140,7 +151,10 @@ async def detail_person(
 
 
 # Validations Path Parameters
-@app.get('/person/detail/{person_id}')
+@app.get(
+    path='/person/detail/{person_id}',
+    status_code=status.HTTP_200_OK
+)
 async def detail_person(
     person_id: int = Path(
         ...,
@@ -159,7 +173,10 @@ async def detail_person(
 
 
 # Validation Request Body
-@app.put('/person/{person_id}')
+@app.put(
+    path='/person/{person_id}',
+    status_code=status.HTTP_200_OK
+)
 async def upload_person(
     person_id: int = Path(
         ...,
