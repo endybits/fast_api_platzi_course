@@ -23,7 +23,7 @@ class HairColor(Enum):
 
 # Models
 
-class BasePerson(BaseModel):
+class PersonBase(BaseModel):
     first_name: str = Field(
         ...,
         min_length=1,
@@ -45,7 +45,7 @@ class BasePerson(BaseModel):
     email: EmailStr
     hair_color: Optional[HairColor] = Field(default=None, example='red')
     is_married: Optional[bool] = Field(default=None, example=True)
-class Person(BasePerson):
+class Person(PersonBase):
     password: str = Field(
         ...,
         min_length=8,
@@ -66,7 +66,7 @@ class Person(BasePerson):
         }
     """
 
-class PersonOut(BasePerson):
+class PersonOut(PersonBase):
     pass
 
 class Location(BaseModel):
