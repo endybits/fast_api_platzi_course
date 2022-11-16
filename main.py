@@ -206,5 +206,4 @@ async def login(
     username: str = Form(...),
     password: str = Form(...)
 ):
-    login_out = LoginOut(username=username)
-    return login_out
+    return LoginOut(username=username)
