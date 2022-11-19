@@ -9,7 +9,7 @@ from pydantic import Field, EmailStr
 # FastAPI Resources
 from fastapi import FastAPI
 from fastapi import status
-from fastapi import Body, Query, Path, Form
+from fastapi import Body, Query, Path, Form, Cookie, Header, UploadFile, File
 
 app = FastAPI()
 
@@ -197,6 +197,7 @@ async def upload_person(
     #results = person.dict() | location.dict()
     return results
 
+# Forms
 @app.post(
     path='/login',
     response_model=LoginOut,
@@ -207,3 +208,50 @@ async def login(
     password: str = Form(...)
 ):
     return LoginOut(username=username)
+
+# Cookies and Header parameters
+@app.post(
+    path='/contac-us',
+    status_code=status.HTTP_200_OK
+)
+async def contact_us(
+    first_name: str = Form(
+        ...,
+        max_length=20,
+        min_length=1,
+        example='Endy'
+    ),
+    last_name: str = Form(
+        ...,
+        max_length=20,
+        min_length=1,
+        example='Bermudez'
+    ),
+    email: EmailStr = Form(
+        ...,
+        example='endyb@mail.on'
+    ),
+    message: str = Form(
+        ...,
+        min_length=20,
+        example='This is a test message!'
+    ),
+    user_agent: Optional[str] = Header(default=None),
+    ads: Optional[str] = Cookie(default=None)
+):
+    return user_agent
+
+
+# Files
+@app.post(
+    path='/post-image',
+    status_code=status.HTTP_200_OK
+)
+async def upload_image(
+    image: UploadFile = File(...)
+):
+    return {
+        'Filename': image.filename,
+        'Format': image.content_type,
+        'Size(Kb)': round(len(image.file.read())/1024, 2)
+    }
