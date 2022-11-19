@@ -108,7 +108,8 @@ class LoginOut(BaseModel):
 
 @app.get(
     path='/',
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Home']
 )
 async def home():
     return {"greeting": {"Hello": "World FastAPI."}}
@@ -118,7 +119,8 @@ async def home():
 @app.post(
     path='/person/new',
     response_model=PersonOut,
-    status_code=status.HTTP_201_CREATED
+    status_code=status.HTTP_201_CREATED,
+    tags=['Person']
 )
 async def new_person(person: Person = Body(...)):
     return person
@@ -127,7 +129,8 @@ async def new_person(person: Person = Body(...)):
 # Validations: Query Parameters
 @app.get(
     path='/person/detail',
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Person']
 )
 async def detail_person(
     name: Optional[str] = Query(
@@ -160,7 +163,8 @@ persons = [1, 2, 3, 4, 5]
 
 @app.get(
     path='/person/detail/{person_id}',
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Person']
 )
 async def detail_person(
     person_id: int = Path(
@@ -190,7 +194,8 @@ async def detail_person(
 # Validation Request Body
 @app.put(
     path='/person/{person_id}',
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Person']
 )
 async def upload_person(
     person_id: int = Path(
@@ -212,7 +217,8 @@ async def upload_person(
 @app.post(
     path='/login',
     response_model=LoginOut,
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Person']
 )
 async def login(
     username: str = Form(...),
@@ -223,7 +229,8 @@ async def login(
 # Cookies and Header parameters
 @app.post(
     path='/contac-us',
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Contact-us']
 )
 async def contact_us(
     first_name: str = Form(
@@ -256,7 +263,8 @@ async def contact_us(
 # Files
 @app.post(
     path='/post-image',
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=['Files']
 )
 async def upload_image(
     image: UploadFile = File(...)
