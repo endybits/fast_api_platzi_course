@@ -109,9 +109,21 @@ class LoginOut(BaseModel):
 @app.get(
     path='/',
     status_code=status.HTTP_200_OK,
-    tags=['Home']
+    tags=['Home'],
+    summary='First example'
 )
 async def home():
+    """
+        Home
+
+        This path operation shows a basic axample to test if the server is Ok!
+
+        Parameters:
+        - None
+
+        Returns a simple hello world dict
+    """
+
     return {"greeting": {"Hello": "World FastAPI."}}
 
 
@@ -120,9 +132,21 @@ async def home():
     path='/person/new',
     response_model=PersonOut,
     status_code=status.HTTP_201_CREATED,
-    tags=['Person']
+    tags=['Person'],
+    summary='Create Person in the app'
 )
-async def new_person(person: Person = Body(...)):
+async def create_person(person: Person = Body(...)):
+    """
+        Create Person
+
+        This path operation creates a person in the app and save the information in Database
+
+        Parameters:
+        - Request body parameter
+            - **person: Person** -> A person model with first name, last name, age, hair color and marital status
+        
+        Returns a person model with first name, lasta name, age, hair color and marital status
+    """
     return person
 
 
@@ -175,6 +199,18 @@ async def detail_person(
         example=22222
     )
 ):
+    """
+        Get Detail Person
+
+        This path operation get a specific person in the Database of this app.
+
+        Parameters:
+        - Path parameter
+            - **person_id: int**
+        
+        Returns a person model with first name, lasta name, age, hair color and marital status
+    """
+
     if person_id not in persons:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -197,7 +233,7 @@ async def detail_person(
     status_code=status.HTTP_200_OK,
     tags=['Person']
 )
-async def upload_person(
+async def update_person(
     person_id: int = Path(
         ...,
         gt=0,
@@ -208,6 +244,21 @@ async def upload_person(
     person: Person = Body(...),
     location: Location = Body(...)
 ):
+    """
+        Update a Person
+
+        This path operation updates a specific person in the Database of this app.
+
+        Parameters:
+        - Path parameter
+            - **person_id: int**
+        - Request body parameter
+            - **person: Person** -> A person model with first name, last name, age, hair color and marital status
+            - **location: Location** -> A location model with city, state, and country fields
+        
+        Returns a mixed dict between person model and location model.  Fields: first name, last name, age, hair color, marital status, city, state, and country.
+    """
+
     results = person.dict()
     results.update(location.dict())
     #results = person.dict() | location.dict()
@@ -224,7 +275,21 @@ async def login(
     username: str = Form(...),
     password: str = Form(...)
 ):
+    """
+        Login
+
+        This path operation allows a person to login in the app.
+
+        Parameters:
+        - Form parameters
+            - **username: str**
+            - **password: str**
+        
+        Returns a person model with first name, last name, age, hair color and, marital status.
+    """
+
     return LoginOut(username=username)
+
 
 # Cookies and Header parameters
 @app.post(
@@ -257,6 +322,25 @@ async def contact_us(
     user_agent: Optional[str] = Header(default=None),
     ads: Optional[str] = Cookie(default=None)
 ):
+    """
+        Contact us
+
+        This path operation allows an user to contact the app personal to exclusive treatment about somewhere topic.
+
+        Parameters:
+        - Form parameters
+            - **first_name: str**
+            - **last_name: str**
+            - **email: EmailStr**
+            - **message: str**
+        - Header parameters
+            - **user_agent: Optional[str]**
+        - Cookies parameters
+            - **ads: Optional[str]**
+        
+        Returns the user agent data, catched from the user 
+    """
+
     return user_agent
 
 
@@ -269,6 +353,18 @@ async def contact_us(
 async def upload_image(
     image: UploadFile = File(...)
 ):
+    """
+        Upload an Image
+
+        This path operation allows an user to Upload a Image File.
+
+        Parameters:
+        - File parameters
+            - **image: UploadFile**
+        
+        Returns the filename, format and size from the uploaded image. 
+    """
+
     return {
         'Filename': image.filename,
         'Format': image.content_type,
